@@ -1,649 +1,981 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Universitas Terbaik Indonesia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --primary: #C8102E;
+      --primary-dark: #8B0A1E;
+      --gold: #F0A500;
+      --dark: #0F0F0F;
+      --dark-2: #1A1A1A;
+      --dark-3: #2A2A2A;
+      --light: #F8F5F0;
+      --text-muted: #888;
+      --white: #ffffff;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+      --shadow: 0 8px 32px rgba(0,0,0,0.35);
+    }
 
-  <head>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--light);
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-	<link href="assets/images/avatar-01.jpg" rel="icon">
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 6%;
+      background: rgba(15,15,15,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(200,16,46,0.18);
+      transition: var(--transition);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--primary); }
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.88rem; font-weight: 500; letter-spacing: 0.5px;
+      color: #ccc; transition: color var(--transition);
+      text-transform: uppercase;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .btn-login {
+      padding: 0.5rem 1.4rem;
+      border: 1.5px solid var(--primary);
+      border-radius: 4px;
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--white);
+      background: transparent;
+      cursor: pointer; transition: var(--transition);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .btn-login:hover { background: var(--primary); }
+    #btn-logout {
+      display: none;
+      padding: 0.5rem 1.4rem;
+      border: 1.5px solid #555;
+      border-radius: 4px;
+      font-size: 0.85rem; font-weight: 600;
+      color: #ccc; background: transparent; cursor: pointer;
+      transition: var(--transition); text-transform: uppercase;
+    }
+    #btn-logout:hover { background: #333; color: var(--white); }
+    #user-greeting {
+      font-size: 0.88rem; color: var(--gold); font-weight: 600;
+      display: none;
+    }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--light); transition: var(--transition);
+    }
 
-    <title>Zada Versatile</title>
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 6% 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 20%, rgba(200,16,46,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(240,165,0,0.08) 0%, transparent 60%),
+        var(--dark);
+    }
+    .hero-grid-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(200,16,46,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,16,46,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.5;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 820px; }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--primary);
+      border: 1px solid rgba(200,16,46,0.4);
+      padding: 0.35rem 1rem; border-radius: 2px; margin-bottom: 1.8rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900; line-height: 1.06;
+      color: var(--white);
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--primary);
+    }
+    .hero p {
+      margin-top: 1.4rem;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      color: #aaa; line-height: 1.7; max-width: 600px; margin-inline: auto;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .hero-cta {
+      margin-top: 2.4rem;
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+    .btn-primary {
+      padding: 0.85rem 2.2rem;
+      background: var(--primary); border: none;
+      color: var(--white); font-weight: 600; font-size: 0.95rem;
+      border-radius: 4px; cursor: pointer; transition: var(--transition);
+      letter-spacing: 0.3px;
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,16,46,0.35); }
+    .btn-outline {
+      padding: 0.85rem 2.2rem;
+      background: transparent; border: 1.5px solid rgba(255,255,255,0.25);
+      color: var(--white); font-weight: 500; font-size: 0.95rem;
+      border-radius: 4px; cursor: pointer; transition: var(--transition);
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats {
+      margin-top: 4rem;
+      display: flex; gap: 2.5rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.6s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; font-weight: 900; color: var(--gold);
+    }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.2rem; }
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    /* ===== SECTION BASE ===== */
+    section { padding: 5rem 6%; }
+    .section-label {
+      font-size: 0.73rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--primary); margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900; color: var(--white); line-height: 1.2;
+    }
+    .section-subtitle {
+      margin-top: 0.8rem; color: #999; font-size: 1rem; max-width: 520px; line-height: 1.7;
+    }
+    .section-header { margin-bottom: 3rem; }
+    .divider {
+      width: 48px; height: 3px;
+      background: var(--primary); margin-top: 1rem;
+    }
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/templatemo-plot-listing.css">
-    <link rel="stylesheet" href="assets/css/animated.css">
-    <link rel="stylesheet" href="assets/css/owl.css">
-<!--
+    /* ===== RANKING CARDS ===== */
+    #ranking { background: var(--dark-2); }
+    .ranking-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .rank-card {
+      background: var(--dark-3);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+    .rank-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(200,16,46,0.35);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+    .rank-card-header {
+      padding: 1.4rem 1.4rem 1rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .rank-badge {
+      min-width: 46px; height: 46px;
+      background: var(--primary); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; font-weight: 900; color: var(--white);
+      flex-shrink: 0;
+    }
+    .rank-badge.gold { background: var(--gold); color: var(--dark); }
+    .rank-badge.silver { background: #A8A9AD; color: var(--dark); }
+    .rank-badge.bronze { background: #CD7F32; color: var(--white); }
+    .rank-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.08rem; font-weight: 700; color: var(--white); line-height: 1.3;
+    }
+    .rank-info p { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+    .rank-card-body { padding: 0 1.4rem 1.4rem; }
+    .rank-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;
+    }
+    .tag {
+      font-size: 0.7rem; padding: 0.2rem 0.65rem;
+      background: rgba(200,16,46,0.12); border: 1px solid rgba(200,16,46,0.25);
+      color: #e88;  border-radius: 2px; font-weight: 500;
+    }
+    .rank-meta {
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+    }
+    .rank-meta-item { text-align: center; }
+    .rank-meta-item .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--gold);
+    }
+    .rank-meta-item .lbl { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; }
 
-TemplateMo 564 Plot Listing
+    /* ===== VIDEO SECTION ===== */
+    #video { background: var(--dark); }
+    .video-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center;
+    }
+    .video-text .section-subtitle { max-width: 100%; }
+    .video-features { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .video-feature {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .vf-icon {
+      width: 38px; height: 38px; border-radius: 6px;
+      background: rgba(200,16,46,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .vf-text h4 { font-size: 0.92rem; font-weight: 600; color: var(--white); }
+    .vf-text p { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem; }
+    .video-embed {
+      border-radius: 8px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+      aspect-ratio: 16/9;
+    }
+    .video-embed iframe {
+      width: 100%; height: 100%; border: none;
+    }
 
-https://templatemo.com/tm-564-plot-listing
+    /* ===== VIDEO TABS ===== */
+    .video-tabs {
+      display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.8rem;
+    }
+    .video-tab-btn {
+      padding: 0.55rem 1.3rem;
+      background: var(--dark-3); border: 1.5px solid rgba(255,255,255,0.08);
+      color: #999; font-size: 0.85rem; font-weight: 600; font-family: inherit;
+      border-radius: 5px; cursor: pointer; transition: var(--transition);
+    }
+    .video-tab-btn:hover { border-color: rgba(200,16,46,0.35); color: var(--white); }
+    .video-tab-btn.active {
+      background: var(--primary); border-color: var(--primary); color: var(--white);
+    }
 
--->
-  </head>
+    /* ===== MAPS SECTION ===== */
+    #maps { background: var(--dark-2); }
+    .maps-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center;
+    }
+    .maps-embed {
+      border-radius: 8px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+    .maps-embed iframe { width: 100%; height: 380px; border: none; border-radius: 8px; }
+    .maps-list { margin-top: 1.8rem; display: flex; flex-direction: column; gap: 1rem; }
+    .maps-item {
+      display: flex; gap: 1rem; align-items: center;
+      padding: 0.8rem 1rem;
+      background: var(--dark-3); border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer; transition: var(--transition);
+    }
+    .maps-item:hover { border-color: rgba(200,16,46,0.3); }
+    .maps-icon {
+      width: 32px; height: 32px; background: rgba(200,16,46,0.15);
+      border-radius: 4px; display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .maps-item-info h4 { font-size: 0.88rem; font-weight: 600; color: var(--white); }
+    .maps-item-info p { font-size: 0.75rem; color: var(--text-muted); }
 
+    /* ===== TIPS SECTION ===== */
+    #tips { background: var(--dark); }
+    .tips-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;
+    }
+    .tip-card {
+      padding: 1.8rem; background: var(--dark-3);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;
+      transition: var(--transition);
+    }
+    .tip-card:hover { border-color: rgba(240,165,0,0.3); transform: translateY(-3px); }
+    .tip-card .icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .tip-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.6rem;
+    }
+    .tip-card p { font-size: 0.84rem; color: #999; line-height: 1.65; }
+
+    /* ===== MODAL LOGIN/REGISTER ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--dark-2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 2.4rem 2.4rem 2rem;
+      width: 100%; max-width: 420px;
+      position: relative;
+      animation: fadeUp 0.3s ease both;
+    }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none; color: #888;
+      font-size: 1.3rem; cursor: pointer; transition: color var(--transition);
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 900; color: var(--white); margin-bottom: 0.3rem;
+    }
+    .modal-box p { font-size: 0.85rem; color: #888; margin-bottom: 1.6rem; }
+    .modal-tabs {
+      display: flex; gap: 0; margin-bottom: 1.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .modal-tab {
+      padding: 0.5rem 1.2rem;
+      font-size: 0.85rem; font-weight: 600;
+      background: none; border: none; color: #888;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: var(--transition);
+    }
+    .modal-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: #aaa; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .form-group input {
+      width: 100%; padding: 0.72rem 1rem;
+      background: var(--dark-3); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 5px; color: var(--white); font-size: 0.9rem; font-family: inherit;
+      outline: none; transition: border-color var(--transition);
+    }
+    .form-group input:focus { border-color: var(--primary); }
+    .form-group input::placeholder { color: #555; }
+    .form-submit {
+      width: 100%; padding: 0.85rem;
+      background: var(--primary); border: none; border-radius: 5px;
+      color: var(--white); font-weight: 700; font-size: 0.95rem;
+      cursor: pointer; transition: var(--transition); margin-top: 0.5rem;
+    }
+    .form-submit:hover { background: var(--primary-dark); }
+    .form-note { font-size: 0.78rem; color: #777; text-align: center; margin-top: 0.8rem; }
+    .form-note a { color: var(--primary); cursor: pointer; }
+    #registerForm, #loginForm { }
+    .alert-msg {
+      padding: 0.7rem 1rem; border-radius: 5px;
+      font-size: 0.82rem; margin-bottom: 1rem; display: none;
+    }
+    .alert-success { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #6ee7a0; }
+    .alert-error { background: rgba(200,16,46,0.15); border: 1px solid rgba(200,16,46,0.3); color: #f88; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--dark-2);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 3rem 6% 2rem;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-brand .nav-logo { margin-bottom: 0.8rem; display: block; }
+    .footer-brand p { font-size: 0.84rem; color: #777; line-height: 1.65; }
+    .footer-col h4 {
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: #aaa; margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .footer-col ul a { font-size: 0.84rem; color: #666; transition: color var(--transition); }
+    .footer-col ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .footer-bottom p { font-size: 0.78rem; color: #555; }
+
+    /* ===== KEYFRAMES ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .video-grid, .maps-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(15,15,15,0.98);
+        padding: 1.5rem 6%; gap: 1.2rem;
+        border-bottom: 1px solid rgba(200,16,46,0.18);
+      }
+    }
+    @media (max-width: 600px) {
+      .hero-stats { gap: 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .ranking-grid { grid-template-columns: 1fr; }
+      .tips-grid { grid-template-columns: 1fr; }
+      .modal-box { padding: 1.8rem 1.4rem; }
+    }
+  </style>
+</head>
 <body>
 
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Uni<span>Top</span> ID</a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#ranking">Peringkat</a></li>
+    <li><a href="#video">Video</a></li>
+    <li><a href="#maps">Lokasi</a></li>
+    <li><a href="#tips">Tips Masuk PTN</a></li>
+  </ul>
+  <div class="nav-right">
+    <span id="user-greeting"></span>
+    <button class="btn-login" id="btn-login-nav" onclick="openModal()">Login</button>
+    <button id="btn-logout" onclick="logout()">Logout</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
     </div>
   </div>
-  <!-- ***** Preloader End ***** -->
+</nav>
 
-  <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <!-- ***** Logo Start ***** -->
-            <a href="index.html" class="logo">
-            </a>
-            <!-- ***** Logo End ***** -->
-            <!-- ***** Menu Start ***** -->
-            <ul class="nav">
-              <li><a href="index.html" class="active">Beranda</a></li>
-              <li><a href="category.html">Kategori</a></li>
-              <li><a href="listing.html">Daftar</a></li>
-              <li><a href="contact.html">Hubungi Kami</a></li>
-            </ul>        
-            <a class='menu-trigger'>
-                <span>Menu</span>
-            </a>
-            <!-- ***** Menu End ***** -->
-          </nav>
-        </div>
-      </div>
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">📚 Panduan Pendidikan Tinggi Indonesia</div>
+    <h1>Universitas <em>Terbaik</em><br>di Indonesia</h1>
+    <p>Temukan perguruan tinggi negeri terbaik pilihan Anda. Dari UI hingga ITS, kami hadirkan informasi lengkap, peringkat, video profil, dan lokasi kampus.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('ranking').scrollIntoView({behavior:'smooth'})">Lihat Peringkat</button>
+      <button class="btn-outline" onclick="openModal()">Daftar Akun</button>
     </div>
-  </header>
-  <!-- ***** Header Area End ***** -->
-
-  <div class="main-banner">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="top-text header-text">
-            <h6>Lebih dari 36.500+ daftar aktif</h6>
-            <h2>Temukan Rumah &amp; Barang-barang terdekat</h2>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <form id="search-form" name="gs" method="submit" role="search" action="#">
-            <div class="row">
-              <div class="col-lg-3 align-self-center">
-                  <fieldset>
-                      <select name="area" class="form-select" aria-label="Area" id="chooseCategory" onchange="this.form.click()">
-                          <option selected>Semua Area</option>
-                          <option value="New Village">Pedesaan baru</option>
-                          <option value="Old Town">Kota Tua</option>
-                          <option value="Modern City">Kota Modern</option>
-                      </select>
-                  </fieldset>
-              </div>
-              <div class="col-lg-3 align-self-center">
-                  <fieldset>
-                      <input type="address" name="address" class="searchText" placeholder="Masukkan Lokasi" autocomplete="on" required>
-                  </fieldset>
-              </div>
-              <div class="col-lg-3 align-self-center">
-                  <fieldset>
-                      <select name="price" class="form-select" aria-label="Default select example" id="chooseCategory" onchange="this.form.click()">
-                          <option selected>Jangkauan Harga</option>
-                          <option value="$100 - $250">$100 - $250</option>
-                          <option value="$250 - $500">$250 - $500</option>
-                          <option value="$500 - $1000">$500 - $1,000</option>
-                          <option value="$1000+">$1,000 atau lebih</option>
-                      </select>
-                  </fieldset>
-              </div>
-              <div class="col-lg-3">                        
-                  <fieldset>
-                      <button class="main-button"><i class="fa fa-search"></i>Telusuri Sekarang</button>
-                  </fieldset>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="col-lg-10 offset-lg-1">
-          <ul class="categories">
-            <li><a href="category.html"><span class="icon"><img src="assets/images/search-icon-01.png" alt="Home"></span> Apartemen</a></li>
-            <li><a href="listing.html"><span class="icon"><img src="assets/images/search-icon-02.png" alt="Food"></span> Makanan &amp; Penghidupan</a></li>
-            <li><a href="#"><span class="icon"><img src="assets/images/search-icon-03.png" alt="Vehicle"></span> Kendaraan</a></li>
-            <li><a href="#"><span class="icon"><img src="assets/images/search-icon-04.png" alt="Shopping"></span> Perbelanjaan</a></li>
-            <li><a href="#"><span class="icon"><img src="assets/images/search-icon-05.png" alt="Travel"></span> Jelajah</a></li>
-          </ul>
-        </div>
-      </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">10</div><div class="stat-label">Universitas Terbaik</div></div>
+      <div class="stat"><div class="stat-num">4.8M+</div><div class="stat-label">Mahasiswa Aktif</div></div>
+      <div class="stat"><div class="stat-num">34</div><div class="stat-label">Provinsi Tersebar</div></div>
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Program Studi</div></div>
     </div>
   </div>
+</section>
 
+<!-- ===== RANKING ===== -->
+<section id="ranking">
+  <div class="section-header">
+    <div class="section-label">🏆 Peringkat 2024</div>
+    <h2 class="section-title">10 Universitas Terbaik<br>Indonesia</h2>
+    <p class="section-subtitle">Berdasarkan pemeringkatan QS World University Rankings, Times Higher Education, dan Webometrics.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="ranking-grid" id="rankingGrid">
+    <!-- Cards generated by JS -->
+  </div>
+</section>
 
-  <div class="popular-categories">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-heading">
-            <h2>Kategori Populer</h2>
-            <h6>Cari-tahu Sekarang</h6>
+<!-- ===== VIDEO SECTION ===== -->
+<section id="video">
+  <div class="section-header">
+    <div class="section-label">&#127916; Profil Kampus</div>
+    <h2 class="section-title">Mengenal Lebih Dekat<br>PTN Indonesia</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab-btn active" onclick="switchVideo('ui', this)">&#127963;&#65039; Universitas Indonesia</button>
+    <button class="video-tab-btn" onclick="switchVideo('ugm', this)">&#127963;&#65039; Universitas Gadjah Mada</button>
+  </div>
+  <div class="video-grid">
+    <div class="video-text">
+      <div id="videoDesc-ui">
+        <p class="section-subtitle">Simak video profil resmi Universitas Indonesia, salah satu universitas riset terkemuka di Asia Tenggara.</p>
+        <div class="video-features">
+          <div class="video-feature">
+            <div class="vf-icon">&#127891;</div>
+            <div class="vf-text"><h4>Akademik Berkualitas</h4><p>Program studi terakreditasi A dengan tenaga pengajar bergelar doktor.</p></div>
           </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="naccs">
-            <div class="grid">
-              <div class="row">
-                <div class="col-lg-3">
-                  <div class="menu">
-                    <div class="first-thumb active">
-                      <div class="thumb">
-                        <span class="icon"><img src="assets/images/search-icon-01.png" alt=""></span>
-                        Apartemen
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">                 
-                        <span class="icon"><img src="assets/images/search-icon-02.png" alt=""></span>
-                        Makanan &amp; Penghidupan
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">                 
-                        <span class="icon"><img src="assets/images/search-icon-03.png" alt=""></span>
-                        Kendaraan
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">                 
-                        <span class="icon"><img src="assets/images/search-icon-04.png" alt=""></span>
-                        Perbelanjaan
-                      </div>
-                    </div>
-                    <div class="last-thumb">
-                      <div class="thumb">                 
-                        <span class="icon"><img src="assets/images/search-icon-05.png" alt=""></span>
-                        Jelajah
-                      </div>
-                    </div>
-                  </div>
-                </div> 
-                <div class="col-lg-9 align-self-center">
-                  <ul class="nacc">
-                    <li class="active">
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-5 align-self-center">
-                              <div class="left-text">
-                                <h4>Sedang Trending!</h4>
-                				<p>Temukan rumah-rumah mewah dengan fasilitas lengkap yang dicari banyak orang</p></p>
-                                <div class="main-white-button"><a href="#"><i class="fa fa-eye"></i> Temukan Lebih</a></div>
-                              </div>
-                            </div>
-                            <div class="col-lg-7 align-self-center">
-                              <div class="right-image">
-                                <img src="assets/images/tabs-image-01.jpg" alt="">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-5 align-self-center">
-                              <div class="left-text">
-                                <h4>Makanan dan Gaya Hidup</h4>
-                                <p>Temukan makanan dan gaya hidup yang sesuai dengan anda</p>
-                                <div class="main-white-button"><a href="#"><i class="fa fa-eye"></i> Temukahn Lebih</a></div>
-                              </div>
-                            </div>
-                            <div class="col-lg-7 align-self-center">
-                              <div class="right-image">
-                                <img src="assets/images/tabs-image-02.jpg" alt="Foods on the table">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-5 align-self-center">
-                              <div class="left-text">
-                                <h4>Kendaraan Pribadi Anda Menanti!</h4>
-                                <p>Temukan mobil dan kendaraan lainnya yang sesuai dengan selera anda</p>
-                                <div class="main-white-button"><a href="listing.html"><i class="fa fa-eye"></i> Temukan Lebih</a></div>
-                              </div>
-                            </div>
-                            <div class="col-lg-7 align-self-center">
-                              <div class="right-image">
-                                <img src="assets/images/tabs-image-03.jpg" alt="cars in the city">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-5 align-self-center">
-                              <div class="left-text">
-                                <h4>Mulai Berbelanja</h4>
-                                <p>Mulailah berbelanja barang-barang yang sesuai dengan kebutuhan anda di sini</p>
-                                <div class="main-white-button"><a href="#"><i class="fa fa-eye"></i> Temukan Lebih</a></div>
-                              </div>
-                            </div>
-                            <div class="col-lg-7 align-self-center">
-                              <div class="right-image">
-                                <img src="assets/images/tabs-image-04.jpg" alt="Shopping Girl">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-5 align-self-center">
-                              <div class="left-text">
-                                <h4>Infromasi Keselamatan Bepergian</h4>
-                                <p>Cari dan telusuri kiat-kiat dalam bepergian</p>
-                                <div class="main-white-button"><a rel="nofollow" href="https://templatemo.com/contact"><i class="fa fa-eye"></i> Temukan Lebih</a></div>
-                              </div>
-                            </div>
-                            <div class="col-lg-7 align-self-center">
-                              <div class="right-image">
-                                <img src="assets/images/tabs-image-05.jpg" alt="Traveling Beach">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>          
-              </div>
-            </div>
+          <div class="video-feature">
+            <div class="vf-icon">&#128302;</div>
+            <div class="vf-text"><h4>Riset &amp; Inovasi</h4><p>Ribuan publikasi ilmiah dan paten setiap tahunnya di berbagai bidang.</p></div>
+          </div>
+          <div class="video-feature">
+            <div class="vf-icon">&#127759;</div>
+            <div class="vf-text"><h4>Jaringan Global</h4><p>Kerjasama internasional dengan lebih dari 200 universitas di seluruh dunia.</p></div>
           </div>
         </div>
       </div>
+      <div id="videoDesc-ugm" style="display:none">
+        <p class="section-subtitle">Simak video profil Universitas Gadjah Mada, universitas nasional tertua dan terbesar di Indonesia.</p>
+        <div class="video-features">
+          <div class="video-feature">
+            <div class="vf-icon">&#128220;</div>
+            <div class="vf-text"><h4>Warisan Nasional</h4><p>Didirikan tahun 1949, UGM adalah simbol perjuangan dan kebanggaan bangsa Indonesia.</p></div>
+          </div>
+          <div class="video-feature">
+            <div class="vf-icon">&#127807;</div>
+            <div class="vf-text"><h4>Kampus Terluas</h4><p>Berlokasi di Yogyakarta dengan luas kampus lebih dari 360 hektar dan fasilitas lengkap.</p></div>
+          </div>
+          <div class="video-feature">
+            <div class="vf-icon">&#129309;</div>
+            <div class="vf-text"><h4>Alumni Berprestasi</h4><p>Menghasilkan alumni terbaik yang tersebar di seluruh penjuru dunia dan berbagai sektor.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="video-embed">
+      <iframe id="videoFrame"
+        src="https://www.youtube.com/embed/vhGH-NHIVSE"
+        title="Profil Universitas Indonesia"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
     </div>
   </div>
+</section>
 
-
-  <div class="recent-listing">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-heading">
-            <h2>Daftar Terkini</h2>
-            <h6>Cari-tahu Sekarang</h6>
-          </div>
+<!-- ===== MAPS SECTION ===== -->
+<section id="maps">
+  <div class="section-header">
+    <div class="section-label">📍 Lokasi Kampus</div>
+    <h2 class="section-title">Temukan Kampus<br>Impian Anda</h2>
+    <p class="section-subtitle">Klik nama universitas untuk melihat lokasinya di peta.</p>
+    <div class="divider"></div>
+  </div>
+  <div class="maps-grid">
+    <div>
+      <div class="maps-list" id="mapsList">
+        <div class="maps-item" onclick="switchMap('ui')">
+          <div class="maps-icon">🏛️</div>
+          <div class="maps-item-info"><h4>Universitas Indonesia</h4><p>Depok, Jawa Barat</p></div>
         </div>
-        <div class="col-lg-12">
-          <div class="owl-carousel owl-listing">
-            <div class="item">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-01.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>1. Unit Apartemen Pertama</h4></a>
-                      <h6>oleh: Monkey D. Luffy</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(18) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $450 - $950 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>2760 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 4 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 4 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-02.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>2. Rumah Gaming</h4></a>
-                      <h6>oleh: Roronoa Zoro</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(24) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $1,400 - $3,500 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>3650 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 4 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 3 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-03.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>3. Secret Place Hidden House</h4></a>
-                      <h6>oleh: Vinsmoke Sanji</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(36) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $1,500 - $3,600 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>5500 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 4 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 3 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-04.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>4. Sunshine Fourth Apartment</h4></a>
-                      <h6>oleh: Tony Tony Chopper</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(24) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $3,600 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>3660 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 5 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 3 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-05.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>5. Best House Of the Town</h4></a>
-                      <h6>oleh: Nico Robin</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(32) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $5,600 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>1750 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 6 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 3 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubhungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-06.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>6. Amazing Pool Party Villa</h4></a>
-                      <h6>oleh: Nefertari D. Vivi</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(40) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $3,850 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>3660 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 4 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 3 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-05.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>7. Sunny Apartment</h4></a>
-                      <h6>oleh: Portgas D. Ace</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(24) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $5,450 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>1640 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 8 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 5 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-02.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>8. Third House of Gaming</h4></a>
-                      <h6>oleh: Trafalgar D. Water Law</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(15) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $5,520 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>1660 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 5 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 4 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="listing-item">
-                    <div class="left-image">
-                      <a href="#"><img src="assets/images/listing-06.jpg" alt=""></a>
-                    </div>
-                    <div class="right-content align-self-center">
-                      <a href="#"><h4>9. Relaxing BBQ Party Villa</h4></a>
-                      <h6>oleh: Eustass Captain Kid</h6>
-                      <ul class="rate">
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li><i class="fa fa-star-o"></i></li>
-                        <li>(20) Ulasan</li>
-                      </ul>
-                      <span class="price"><div class="icon"><img src="assets/images/listing-icon-01.png" alt=""></div> $4,760 / bulan dengan pajak</span>
-                      <span class="details">Detail: <em>2880 sq ft</em></span>
-                      <ul class="info">
-                        <li><img src="assets/images/listing-icon-02.png" alt=""> 6 Ruang Tidur</li>
-                        <li><img src="assets/images/listing-icon-03.png" alt=""> 4 Bilik Air</li>
-                      </ul>
-                      <div class="main-white-button">
-                        <a href="contact.html"><i class="fa fa-eye"></i> Hubungi Sekarang</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="maps-item" onclick="switchMap('ugm')">
+          <div class="maps-icon">🏛️</div>
+          <div class="maps-item-info"><h4>Universitas Gadjah Mada</h4><p>Yogyakarta, DIY</p></div>
+        </div>
+        <div class="maps-item" onclick="switchMap('itb')">
+          <div class="maps-icon">🏛️</div>
+          <div class="maps-item-info"><h4>Institut Teknologi Bandung</h4><p>Bandung, Jawa Barat</p></div>
+        </div>
+        <div class="maps-item" onclick="switchMap('its')">
+          <div class="maps-icon">🏛️</div>
+          <div class="maps-item-info"><h4>Institut Teknologi Sepuluh Nopember</h4><p>Surabaya, Jawa Timur</p></div>
+        </div>
+        <div class="maps-item" onclick="switchMap('ipb')">
+          <div class="maps-icon">🏛️</div>
+          <div class="maps-item-info"><h4>Institut Pertanian Bogor</h4><p>Bogor, Jawa Barat</p></div>
         </div>
       </div>
+    </div>
+    <div class="maps-embed">
+      <iframe id="mapFrame"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.479!2d106.8266!3d-6.3607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ece3a4f0e5f9%3A0x1928f7a77c80af4f!2sUniversitas%20Indonesia!5e0!3m2!1sen!2sid!4v1700000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
     </div>
   </div>
+</section>
 
+<!-- ===== TIPS SECTION ===== -->
+<section id="tips">
+  <div class="section-header">
+    <div class="section-label">💡 Tips & Panduan</div>
+    <h2 class="section-title">Tips Masuk<br>PTN Favorit</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="icon">📖</div>
+      <h3>Konsisten Belajar</h3>
+      <p>Buat jadwal belajar rutin minimal 3 jam per hari. Fokus pada mata pelajaran yang menjadi dasar ujian seperti Matematika, Fisika, dan Biologi.</p>
+    </div>
+    <div class="tip-card">
+      <div class="icon">📝</div>
+      <h3>Latihan Soal Rutin</h3>
+      <p>Kerjakan soal-soal SNBT dan UTBK dari tahun-tahun sebelumnya. Identifikasi pola soal dan tingkatkan kecepatan mengerjakan ujian.</p>
+    </div>
+    <div class="tip-card">
+      <div class="icon">🎯</div>
+      <h3>Pilih Program Studi Tepat</h3>
+      <p>Pilih prodi sesuai minat dan bakat. Cek rasio penerimaan dan passing grade tiap program studi di setiap universitas.</p>
+    </div>
+    <div class="tip-card">
+      <div class="icon">🏆</div>
+      <h3>Raih Prestasi Non-Akademik</h3>
+      <p>Prestasi olimpiade, olahraga, dan seni dapat membuka jalur SNBP (Seleksi Nasional Berdasarkan Prestasi) tanpa ujian tulis.</p>
+    </div>
+    <div class="tip-card">
+      <div class="icon">💻</div>
+      <h3>Manfaatkan Bimbel Online</h3>
+      <p>Gunakan platform belajar online seperti Ruangguru, Zenius, atau video YouTube gratis untuk materi tambahan berkualitas.</p>
+    </div>
+    <div class="tip-card">
+      <div class="icon">🤝</div>
+      <h3>Bergabung Komunitas Belajar</h3>
+      <p>Ikuti grup belajar bersama atau forum online. Diskusi dengan teman sebaya seringkali lebih efektif dalam memahami konsep sulit.</p>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="about">
-            <div class="logo">
-              <img src="assets/images/black-logo.png" alt="Plot Listing">
-            </div>
-            <p><a rel="nofollow" href="https://templatemo.com/tm-564-plot-listing" target="_parent">Situs web ini</a> dimaksudkan untuk penugasan akhir mata pelajaran Informatika<a rel="nofollow" href="https://sman8yogya.sch.id/" target="_blank"> Delayota</a> milik Zada</p>
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="nav-logo">Uni<span style="color:var(--primary)">Top</span> ID</span>
+      <p>Portal informasi universitas terbaik Indonesia. Membantu calon mahasiswa menemukan perguruan tinggi yang tepat sesuai minat dan kemampuan.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigasi</h4>
+      <ul>
+        <li><a href="#home">Beranda</a></li>
+        <li><a href="#ranking">Peringkat</a></li>
+        <li><a href="#video">Video</a></li>
+        <li><a href="#maps">Lokasi</a></li>
+        <li><a href="#tips">Tips</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Universitas</h4>
+      <ul>
+        <li><a href="#">Universitas Indonesia</a></li>
+        <li><a href="#">Gadjah Mada</a></li>
+        <li><a href="#">ITB</a></li>
+        <li><a href="#">ITS</a></li>
+        <li><a href="#">IPB</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informasi</h4>
+      <ul>
+        <li><a href="#">SNBT 2024</a></li>
+        <li><a href="#">Beasiswa</a></li>
+        <li><a href="#">Jalur Mandiri</a></li>
+        <li><a href="#">KIP Kuliah</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 UniTop ID — Dibuat untuk keperluan edukasi</p>
+    <p>Informatika · Kelas X · LKPD Website Pribadi</p>
+  </div>
+</footer>
+
+<!-- ===== MODAL LOGIN / REGISTER ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 id="modalTitle">Selamat Datang</h2>
+    <p id="modalSubtitle">Masuk untuk mengakses fitur lengkap</p>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="modal-tab" id="tab-register" onclick="switchTab('register')">Daftar</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <div class="alert-msg alert-error" id="loginError"></div>
+      <div class="alert-msg alert-success" id="loginSuccess"></div>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="loginUsername" placeholder="Masukkan username" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Masukkan password" />
+      </div>
+      <button class="form-submit" onclick="doLogin()">Masuk</button>
+      <p class="form-note">Belum punya akun? <a onclick="switchTab('register')">Daftar sekarang</a></p>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none">
+      <div class="alert-msg alert-error" id="registerError"></div>
+      <div class="alert-msg alert-success" id="registerSuccess"></div>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="regUsername" placeholder="Buat username unik" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="email@kamu.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Min. 6 karakter" />
+      </div>
+      <button class="form-submit" onclick="doRegister()">Buat Akun</button>
+      <p class="form-note">Sudah punya akun? <a onclick="switchTab('login')">Login di sini</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  /* ===== DATA UNIVERSITAS ===== */
+  const universities = [
+    { rank: 1, name: "Universitas Indonesia", short: "UI", city: "Depok, Jawa Barat", tags: ["Hukum","Kedokteran","Teknik"], qs: 237, students: "40.000+", prodi: 164, type: "gold" },
+    { rank: 2, name: "Universitas Gadjah Mada", short: "UGM", city: "Yogyakarta, DIY", tags: ["Pertanian","Teknik","Sosial"], qs: 254, students: "55.000+", prodi: 270, type: "silver" },
+    { rank: 3, name: "Institut Teknologi Bandung", short: "ITB", city: "Bandung, Jawa Barat", tags: ["Teknik","Sains","Arsitektur"], qs: 290, students: "18.000+", prodi: 91, type: "bronze" },
+    { rank: 4, name: "Institut Pertanian Bogor", short: "IPB", city: "Bogor, Jawa Barat", tags: ["Pertanian","Kehutanan","Biologi"], qs: 521, students: "20.000+", prodi: 115, type: "" },
+    { rank: 5, name: "Universitas Airlangga", short: "UNAIR", city: "Surabaya, Jawa Timur", tags: ["Kedokteran","Farmasi","Hukum"], qs: 521, students: "30.000+", prodi: 151, type: "" },
+    { rank: 6, name: "Institut Teknologi Sepuluh Nopember", short: "ITS", city: "Surabaya, Jawa Timur", tags: ["Teknik","Kelautan","Sains"], qs: 601, students: "18.000+", prodi: 89, type: "" },
+    { rank: 7, name: "Universitas Diponegoro", short: "UNDIP", city: "Semarang, Jawa Tengah", tags: ["Teknik","Hukum","Perikanan"], qs: 801, students: "45.000+", prodi: 190, type: "" },
+    { rank: 8, name: "Universitas Brawijaya", short: "UB", city: "Malang, Jawa Timur", tags: ["Pertanian","Teknik","Kedokteran"], qs: 801, students: "58.000+", prodi: 167, type: "" },
+    { rank: 9, name: "Universitas Padjadjaran", short: "UNPAD", city: "Bandung, Jawa Barat", tags: ["Kedokteran","Hukum","Sosial"], qs: 801, students: "35.000+", prodi: 180, type: "" },
+    { rank: 10, name: "Universitas Sebelas Maret", short: "UNS", city: "Surakarta, Jawa Tengah", tags: ["Kedokteran","Teknik","FKIP"], qs: 1001, students: "32.000+", prodi: 151, type: "" },
+  ];
+
+  /* ===== RENDER RANKING CARDS ===== */
+  function renderRanking() {
+    const grid = document.getElementById('rankingGrid');
+    grid.innerHTML = universities.map(u => `
+      <div class="rank-card">
+        <div class="rank-card-header">
+          <div class="rank-badge ${u.type}">${u.rank}</div>
+          <div class="rank-info">
+            <h3>${u.name}</h3>
+            <p>📍 ${u.city}</p>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="helpful-links">
-            <h4>Tautan</h4>
-            <div class="row">
-              <div class="col-lg-6 col-sm-6">
-                <ul>
-                  <li><a href="#">Kategori</a></li>
-                  <li><a href="#">Ulasan</a></li>
-                  <li><a href="#">Daftar</a></li>
-                  <li><a href="#">Hubungi Kami</a></li>
-                </ul>
-              </div>
-              <div class="col-lg-6">
-                <ul>
-                  <li><a href="#">Tentang Kami</a></li>
-                  <li><a href="#">Penghargaan</a></li>
-                  <li><a href="#">Situs</a></li>
-                  <li><a href="#">Kebhijakan Privasi</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="contact-us">
-            <h4>Hubungi Kami</h4>
-            <p>Jl. Sidobali No.1, Muja Muju, Kec. Umbulharjo, Kota Yogyakarta, Daerah Istimewa Yogyakarta 55165</p>
-            <div class="row">
-              <div class="col-lg-6">
-                <a href="#">(0274) 513493</a>
-              </div>
-              <div class="col-lg-6">
-                <a href="#">(0274) 513493</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="sub-footer">
-            <p>Copyright © 2021 Plot Listing Co., Ltd. All Rights Reserved.
-            <br>
-			Design: <a rel="nofollow" href="https://templatemo.com" title="CSS Templates">TemplateMo</a></p>
+        <div class="rank-card-body">
+          <div class="rank-tags">${u.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          <div class="rank-meta">
+            <div class="rank-meta-item"><div class="num">QS ${u.qs}</div><div class="lbl">Peringkat Dunia</div></div>
+            <div class="rank-meta-item"><div class="num">${u.students}</div><div class="lbl">Mahasiswa</div></div>
+            <div class="rank-meta-item"><div class="num">${u.prodi}</div><div class="lbl">Prodi</div></div>
           </div>
         </div>
       </div>
-    </div>
-  </footer>
+    `).join('');
+  }
+  renderRanking();
 
+  /* ===== MAP SWITCHER ===== */
+  const mapUrls = {
+    ui:  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.479!2d106.8266!3d-6.3607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ece3a4f0e5f9%3A0x1928f7a77c80af4f!2sUniversitas%20Indonesia!5e0!3m2!1sen!2sid",
+    ugm: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.0!2d110.3784!3d-7.7714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a57769e5e9b41%3A0x9a91e7febb4f4b35!2sUniversitas%20Gadjah%20Mada!5e0!3m2!1sen!2sid",
+    itb: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.587!2d107.6099!3d-6.8923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e65767c9b183%3A0x2478e3dcdce37961!2sInstitut%20Teknologi%20Bandung%2C%20Jl.%20Ganesha%20No.10%2C%20Lebak%20Siliwangi%2C%20Coblong%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1700000000001",
+    its: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.5!2d112.7956!3d-7.2818!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fb9c5e5e5e5e%3A0x1!2sInstitut%20Teknologi%20Sepuluh%20Nopember!5e0!3m2!1sen!2sid",
+    ipb: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.4!2d106.7226!3d-6.5597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c3b2a5e5e5e5%3A0x1!2sInstitut%20Pertanian%20Bogor!5e0!3m2!1sen!2sid",
+  };
+  function switchMap(key) {
+    document.getElementById('mapFrame').src = mapUrls[key];
+    document.querySelectorAll('.maps-item').forEach(el => el.style.borderColor = '');
+    event.currentTarget.style.borderColor = 'rgba(200,16,46,0.5)';
+  }
 
-  <!-- Scripts -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/owl-carousel.js"></script>
-  <script src="assets/js/animation.js"></script>
-  <script src="assets/js/imagesloaded.js"></script>
-  <script src="assets/js/custom.js"></script>
+  /* ===== HAMBURGER MENU ===== */
+  function toggleMenu() {
+    document.getElementById('nav-links').classList.toggle('open');
+  }
 
+  /* ===== MODAL OPEN/CLOSE ===== */
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  /* ===== SWITCH TAB ===== */
+  function switchTab(tab) {
+    if (tab === 'login') {
+      document.getElementById('loginForm').style.display = '';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('tab-login').classList.add('active');
+      document.getElementById('tab-register').classList.remove('active');
+      document.getElementById('modalTitle').textContent = 'Selamat Datang';
+      document.getElementById('modalSubtitle').textContent = 'Masuk untuk mengakses fitur lengkap';
+    } else {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = '';
+      document.getElementById('tab-login').classList.remove('active');
+      document.getElementById('tab-register').classList.add('active');
+      document.getElementById('modalTitle').textContent = 'Buat Akun';
+      document.getElementById('modalSubtitle').textContent = 'Bergabung dengan ribuan pelajar Indonesia';
+    }
+  }
+
+  /* ===== USER STORAGE (JavaScript Object) ===== */
+  let users = JSON.parse(localStorage.getItem('unitop_users') || '[]');
+
+  /* ===== REGISTER ===== */
+  function doRegister() {
+    const username = document.getElementById('regUsername').value.trim();
+    const email    = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const errEl    = document.getElementById('registerError');
+    const okEl     = document.getElementById('registerSuccess');
+    errEl.style.display = 'none'; okEl.style.display = 'none';
+
+    if (!username || !email || !password) {
+      showAlert(errEl, '⚠️ Semua kolom harus diisi!'); return;
+    }
+    if (password.length < 6) {
+      showAlert(errEl, '⚠️ Password minimal 6 karakter!'); return;
+    }
+    const exists = users.find(u => u.username === username);
+    if (exists) {
+      showAlert(errEl, '⚠️ Username sudah digunakan, pilih username lain!'); return;
+    }
+    users.push({ username, email, password });
+    localStorage.setItem('unitop_users', JSON.stringify(users));
+    showAlert(okEl, `✅ Akun "${username}" berhasil dibuat! Silakan login.`);
+    alert(`Selamat! Akun "${username}" berhasil didaftarkan. Silakan login.`);
+    setTimeout(() => switchTab('login'), 1500);
+  }
+
+  /* ===== LOGIN ===== */
+  function doLogin() {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const errEl    = document.getElementById('loginError');
+    const okEl     = document.getElementById('loginSuccess');
+    errEl.style.display = 'none'; okEl.style.display = 'none';
+
+    if (!username || !password) {
+      showAlert(errEl, '⚠️ Username dan password wajib diisi!'); return;
+    }
+
+    // Cek user lokal
+    const found = users.find(u => u.username === username && u.password === password);
+    // Cek user demo bawaan
+    const demo  = (username === 'heri' && password === '123') ||
+                  (username === 'admin' && password === '123');
+
+    if (found || demo) {
+      showAlert(okEl, `✅ Login berhasil! Selamat datang, ${username}.`);
+      alert(`Selamat datang, ${username}! Anda berhasil masuk.`);
+      localStorage.setItem('unitop_loggedin', username);
+      setTimeout(() => {
+        closeModal();
+        updateLoginState(username);
+      }, 800);
+    } else {
+      showAlert(errEl, '❌ Username atau password salah. Coba lagi!');
+    }
+  }
+
+  /* ===== LOGOUT ===== */
+  function logout() {
+    localStorage.removeItem('unitop_loggedin');
+    updateLoginState(null);
+    alert('Anda telah keluar. Sampai jumpa!');
+  }
+
+  /* ===== UPDATE NAV STATE ===== */
+  function updateLoginState(username) {
+    const greeting = document.getElementById('user-greeting');
+    const btnLogin  = document.getElementById('btn-login-nav');
+    const btnLogout = document.getElementById('btn-logout');
+    if (username) {
+      greeting.textContent = `👋 ${username}`;
+      greeting.style.display = 'inline';
+      btnLogin.style.display  = 'none';
+      btnLogout.style.display = 'inline-block';
+    } else {
+      greeting.style.display  = 'none';
+      btnLogin.style.display  = 'inline-block';
+      btnLogout.style.display = 'none';
+    }
+  }
+
+  /* ===== HELPER ===== */
+  function showAlert(el, msg) {
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  /* ===== INIT: cek session ===== */
+  (function init() {
+    const saved = localStorage.getItem('unitop_loggedin');
+    if (saved) updateLoginState(saved);
+  })();
+
+  /* ===== SWITCH VIDEO ===== */
+  const videoSrcs = {
+    ui:  'https://www.youtube.com/embed/vhGH-NHIVSE',
+    ugm: 'https://www.youtube.com/embed/ueDXnBd7TJo',
+  };
+  function switchVideo(key, btn) {
+    document.getElementById('videoFrame').src = videoSrcs[key];
+    document.getElementById('videoDesc-ui').style.display  = key === 'ui'  ? '' : 'none';
+    document.getElementById('videoDesc-ugm').style.display = key === 'ugm' ? '' : 'none';
+    document.querySelectorAll('.video-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  /* ===== SCROLL ANIMATION ===== */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.rank-card, .tip-card, .video-feature, .maps-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
 </body>
-
 </html>
